@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,9 +36,17 @@ const changeTime = (hoursContainers, jsonData) => {
     });
 };
 const fetchData = () => __awaiter(void 0, void 0, void 0, function* () {
-    const response = yield fetch("/data.json");
-    const jsonData = yield response.json();
-    return jsonData;
+    try {
+        const response = yield fetch("/data.json");
+        if (!response.ok) {
+            throw new Error("cant fetch the data");
+        }
+        const jsonData = yield response.json();
+        return jsonData;
+    }
+    catch (error) {
+        console.log(error);
+    }
 });
 const createContainers = (object) => {
     const { title, timeframes, color, path } = object;
@@ -63,11 +72,17 @@ const createContainers = (object) => {
     timesContainer === null || timesContainer === void 0 ? void 0 : timesContainer.append(div);
 };
 const handleData = () => __awaiter(void 0, void 0, void 0, function* () {
-    const jsonData = yield fetchData();
-    jsonData.forEach((object) => createContainers(object));
-    hoursContainers = document.querySelectorAll(".hours--container");
-    changeTime(hoursContainers, jsonData);
+    try {
+        const jsonData = yield fetchData();
+        if (jsonData) {
+            jsonData.forEach((object) => createContainers(object));
+            hoursContainers = document.querySelectorAll(".hours--container");
+            changeTime(hoursContainers, jsonData);
+        }
+    }
+    catch (error) {
+        console.log(error);
+    }
 });
 fetchData();
 handleData();
-export {};

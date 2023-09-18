@@ -2,8 +2,6 @@ const timePickers = document.querySelectorAll(".timepicker--panel p");
 const timesContainer = document.querySelector(".times--container");
 let hoursContainers = document.querySelectorAll(".hours--container");
 
-import data from "./data.json"
-
 type TimeFrameData = {
     current: number;
     previous: number;
@@ -48,10 +46,19 @@ const changeTime = (hoursContainers: NodeListOf<Element>, jsonData: ActivityData
     });
 };
 
-const fetchData = async (): Promise<ActivityData[]> => {
-    const response = await fetch("/data.json")
-    const jsonData: ActivityData[] = await response.json();
-    return jsonData;
+const fetchData = async (): Promise<ActivityData[] | undefined> => {
+    try {
+        const response = await fetch("/data.json")
+        if(!response.ok) {
+            throw new Error("cant fetch the data")
+        }
+
+        const jsonData: ActivityData[] | undefined = await response.json();
+        return jsonData;
+
+    } catch (error) {
+        console.log(error)
+    }
 };
 
 const createContainers = (object: ActivityData): void => {
@@ -79,10 +86,17 @@ const createContainers = (object: ActivityData): void => {
 };
 
 const handleData = async (): Promise<void> => {
-    const jsonData = await fetchData();
-    jsonData.forEach((object) => createContainers(object))
-    hoursContainers = document.querySelectorAll(".hours--container");
-    changeTime(hoursContainers, jsonData);
+    try {
+        const jsonData = await fetchData();
+        if(jsonData) {
+            jsonData.forEach((object) => createContainers(object))
+            hoursContainers = document.querySelectorAll(".hours--container");
+            changeTime(hoursContainers, jsonData);
+        }
+    } catch (error) {
+        console.log(error)
+    }
+   
 };
 
 
