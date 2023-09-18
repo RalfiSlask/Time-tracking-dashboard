@@ -2,6 +2,8 @@ const timePickers = document.querySelectorAll(".timepicker--panel p");
 const timesContainer = document.querySelector(".times--container");
 let hoursContainers = document.querySelectorAll(".hours--container");
 
+import data from "./data.json"
+
 type TimeFrameData = {
     current: number;
     previous: number;
