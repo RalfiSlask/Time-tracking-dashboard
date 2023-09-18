@@ -1,4 +1,4 @@
-![Audiophile-ecommerce-website](./preview.png)
+![Time-Tracking-Dashboard](./preview.png)
 
 
 Built with
@@ -6,9 +6,7 @@ Built with
 - Semantic HTML5 markup
 - CSS
 - Flexbox
-- Javascript
-- React
-- Tailwind
+- Typescript
 
 Author
 
@@ -17,5 +15,5 @@ Author
 
 Live server
 
-- https://ralfislask.github.io/Audiophile-Ecommerce/
+- 
 
