@@ -2,7 +2,25 @@ const timePickers = document.querySelectorAll(".timepicker--panel p");
 const timesContainer = document.querySelector(".times--container");
 let hoursContainers = document.querySelectorAll(".hours--container");
 
+type TimeFrameData = {
+    current: number;
+    previous: number;
+};
+
+type TimeFrame = {
+    daily: TimeFrameData;
+    weekly: TimeFrameData;
+    monthly: TimeFrameData;
+};
+
+type ActivityData = {
+    title: string;
+    timeframes: TimeFrame;
+    color: string;
+    path: string;
+};
 type TimeChoiceType = keyof TimeFrame;
+
 let timeChoice: string | undefined = Array.from(timePickers).find(time => time.classList.contains("active"))?.textContent?.toLowerCase();
 
 
@@ -28,31 +46,11 @@ const changeTime = (hoursContainers: NodeListOf<Element>, jsonData: ActivityData
     });
 };
 
-type TimeFrameData = {
-    current: number;
-    previous: number;
-};
-
-type TimeFrame = {
-    daily: TimeFrameData;
-    weekly: TimeFrameData;
-    monthly: TimeFrameData;
-};
-
-type ActivityData = {
-    title: string;
-    timeframes: TimeFrame;
-    color: string;
-    path: string;
-};
-
 const fetchData = async (): Promise<ActivityData[]> => {
     const response = await fetch("/data.json")
     const jsonData: ActivityData[] = await response.json();
     return jsonData;
 };
-
-fetchData(); 
 
 const createContainers = (object: ActivityData): void => {
     const { title, timeframes, color, path } = object;
@@ -85,5 +83,7 @@ const handleData = async (): Promise<void> => {
     changeTime(hoursContainers, jsonData);
 };
 
+
+fetchData(); 
 handleData();
 
